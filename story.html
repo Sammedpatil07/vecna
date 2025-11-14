@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Stories</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+        }
+
+        .stories-section {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .story-circle {
+            width: 80px;
+            height: 80px;
+            margin: 10px;
+            border-radius: 50%;
+            border: 3px solid #1877f2;
+            background-color: #fff;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .story-circle:hover {
+            transform: scale(1.1);
+            transition: all 0.3s ease;
+        }
+
+        .story-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+        }
+
+        /* Full-screen Story Viewer */
+        .story-viewer {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .story-viewer img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 15px;
+        }
+
+        .story-progress-bar {
+            position: absolute;
+            top: 20px;
+            left: 10px;
+            width: 90%;
+            display: flex;
+            gap: 10px;
+        }
+
+        .progress-segment {
+            height: 4px;
+            flex-grow: 1;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            background-color: white;
+            transition: width 3s linear;
+        }
+
+        .story-buttons {
+            position: absolute;
+            bottom: 40px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .story-buttons button {
+            padding: 10px 20px;
+            background-color: #1877f2;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .story-buttons button:hover {
+            background-color: #1558c9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stories-section">
+        <div class="story-circle" style="background-image: url('https://via.placeholder.com/300x300');" onclick="viewStory(0)">
+            <div class="story-overlay"></div>
+        </div>
+        <div class="story-circle" style="background-image: url('https://via.placeholder.com/300x300?text=Story+2');" onclick="viewStory(1)">
+            <div class="story-overlay"></div>
+        </div>
+        <div class="story-circle" style="background-image: url('https://via.placeholder.com/300x300?text=Story+3');" onclick="viewStory(2)">
+            <div class="story-overlay"></div>
+        </div>
+    </div>
+
+    <div class="story-viewer" id="storyViewer">
+        <div class="story-progress-bar">
+            <div class="progress-segment"><div class="progress-fill"></div></div>
+            <div class="progress-segment"><div class="progress-fill"></div></div>
+            <div class="progress-segment"><div class="progress-fill"></div></div>
+        </div>
+
+        <img id="storyImage" src="https://via.placeholder.com/300x300">
+        <div class="story-buttons">
+            <button onclick="previousStory()">Previous</button>
+            <button onclick="nextStory()">Next</button>
+            <button onclick="closeStory()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const stories = [
+            'https://via.placeholder.com/600x400',
+            'https://via.placeholder.com/600x400?text=Story+2',
+            'https://via.placeholder.com/600x400?text=Story+3',
+        ];
+
+        let currentStoryIndex = 0;
+        let progressTimeout;
+
+        function viewStory(index) {
+            currentStoryIndex = index;
+            document.getElementById('storyViewer').style.display = 'flex';
+            updateStory();
+        }
+
+        function updateStory() {
+            const image = document.getElementById('storyImage');
+            image.src = stories[currentStoryIndex];
+
+            // Reset and restart progress bar animation
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => bar.style.width = '0');
+
+            setTimeout(() => {
+                progressBars[currentStoryIndex].style.width = '100%';
+            }, 50);
+
+            // Auto-advance to the next story after 3 seconds
+            progressTimeout = setTimeout(nextStory, 3000);
+        }
+
+        function nextStory() {
+            clearTimeout(progressTimeout);
+            if (currentStoryIndex < stories.length - 1) {
+                currentStoryIndex++;
+                updateStory();
+            } else {
+                closeStory();
+            }
+        }
+
+        function previousStory() {
+            clearTimeout(progressTimeout);
+            if (currentStoryIndex > 0) {
+                currentStoryIndex--;
+                updateStory();
+            }
+        }
+
+        function closeStory() {
+            clearTimeout(progressTimeout);
+            document.getElementById('storyViewer').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>

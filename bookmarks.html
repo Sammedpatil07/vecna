@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Bookmarks</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .bookmark-container {
+            display: flex;
+            gap: 15px;
+        }
+
+        .bookmark {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #fff;
+            font-size: 24px;
+            border-radius: 50%;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .bookmark:hover {
+            transform: scale(1.2);
+        }
+
+        .facebook { background: #3b5998; }
+        .twitter { background: #1da1f2; }
+        .instagram { background: #e1306c; }
+        .linkedin { background: #0077b5; }
+        .youtube { background: #ff0000; }
+    </style>
+</head>
+<body>
+
+    <div class="bookmark-container">
+       <div><b>FACEBOOK</b>
+        <a href="https://www.facebook.com" class="bookmark facebook" target="_blank">
+            <i class="fab fa-facebook-f"></i>
+        </a></div><br> 
+        <div><b>TWITTER</b>
+        <a href="https://www.twitter.com" class="bookmark twitter" target="_blank">
+            <i class="fab fa-twitter"></i>
+        </a></div><br>
+        <div><b>INSTAGRAM</b>
+        <a href="https://www.instagram.com" class="bookmark instagram" target="_blank">
+            <i class="fab fa-instagram"></i>
+        </a></div><br>
+        <div><b>LINKEDIN</b>
+        <a href="https://www.linkedin.com" class="bookmark linkedin" target="_blank">
+            <i class="fab fa-linkedin-in"></i>
+        </a></div><br>
+        <div><b>YOUTUBE</b>
+        <a href="https://www.youtube.com" class="bookmark youtube" target="_blank">
+            <i class="fab fa-youtube"></i>
+        </a></div><br>
+    </div>
+
+</body>
+</html>

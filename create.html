@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Post</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #fafafa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .post-container, .submitted-post {
+            width: 400px;
+            background-color: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .post-header {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #dbdbdb;
+            margin-bottom: 15px;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 200px;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+
+        .image-preview:hover {
+            background-color: #e8e8e8;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+
+        .upload-btn {
+            display: inline-block;
+            background-color: #0095f6;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 15px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            background-color: #007bb5;
+        }
+
+        .caption-box {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            border: 1px solid #dbdbdb;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            resize: none;
+            font-size: 1rem;
+            color: #333;
+            animation: slideUp 0.5s ease-in-out;
+        }
+
+        .select-options {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #dbdbdb;
+            border-radius: 5px;
+            background-color: #fff;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .post-btn, .edit-btn, .delete-btn {
+            display: inline-block;
+            background-color: #0095f6;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .post-btn:hover, .edit-btn:hover {
+            background-color: #007bb5;
+        }
+
+        .delete-btn {
+            background-color: #ff4d4d;
+        }
+
+        .delete-btn:hover {
+            background-color: #cc0000;
+        }
+
+        .submitted-post {
+            display: none;
+        }
+
+        .submitted-post img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="post-container">
+        <div class="post-header">Create New Post</div>
+
+        <div class="image-preview" id="imagePreview">
+            <span>No image selected</span>
+        </div>
+
+        <input type="file" id="fileInput" accept="image/*" style="display: none;">
+        <label for="fileInput" class="upload-btn">Choose Image</label>
+
+        <textarea class="caption-box" id="caption" placeholder="Write a caption..."></textarea>
+
+        <select class="select-options" id="quality">
+            <option value="high">High Quality</option>
+            <option value="medium">Medium Quality</option>
+            <option value="low">Low Quality</option>
+        </select>
+
+        <select class="select-options" id="filter">
+            <option value="none">No Filter</option>
+            <option value="grayscale">Grayscale</option>
+            <option value="sepia">Sepia</option>
+            <option value="blur">Blur</option>
+        </select>
+
+        <button class="post-btn" id="postBtn">Post</button>
+    </div>
+
+    <div class="submitted-post" id="submittedPost">
+        <img id="submittedImage" src="" alt="Post Image">
+        <p id="submittedCaption"></p>
+        <p id="submittedQuality"></p>
+        <p id="submittedFilter"></p>
+        <button class="edit-btn" id="editBtn">Edit Post</button>
+        <button class="delete-btn" id="deleteBtn">Delete Post</button>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const postBtn = document.getElementById('postBtn');
+        const captionBox = document.getElementById('caption');
+        const qualitySelect = document.getElementById('quality');
+        const filterSelect = document.getElementById('filter');
+
+        const submittedPost = document.getElementById('submittedPost');
+        const submittedImage = document.getElementById('submittedImage');
+        const submittedCaption = document.getElementById('submittedCaption');
+        const submittedQuality = document.getElementById('submittedQuality');
+        const submittedFilter = document.getElementById('submittedFilter');
+        const editBtn = document.getElementById('editBtn');
+        const deleteBtn = document.getElementById('deleteBtn');
+
+        let savedImageSrc, savedCaption, savedQuality, savedFilter;
+
+        fileInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+
+                reader.addEventListener('load', function () {
+                    imagePreview.innerHTML = `<img src="${this.result}" alt="Selected Image">`;
+                });
+
+                reader.readAsDataURL(file);
+            }
+        });
+
+        postBtn.addEventListener('click', function () {
+            const caption = captionBox.value;
+            const imageSrc = imagePreview.querySelector('img')?.src;
+            const quality = qualitySelect.value;
+            const filter = filterSelect.value;
+
+            if (imageSrc && caption) {
+                submittedImage.src = imageSrc;
+                submittedCaption.innerText = `Caption: ${caption}`;
+                submittedQuality.innerText = `Quality: ${quality}`;
+                submittedFilter.innerText = `Filter: ${filter}`;
+
+                savedImageSrc = imageSrc;
+                savedCaption = caption;
+                savedQuality = quality;
+                savedFilter = filter;
+
+                submittedPost.style.display = 'block';
+                imagePreview.innerHTML = '<span>No image selected</span>';
+                captionBox.value = '';
+            } else {
+                alert('Please select an image and write a caption before posting.');
+            }
+        });
+
+        editBtn.addEventListener('click', function () {
+            imagePreview.innerHTML = `<img src="${savedImageSrc}" alt="Selected Image">`;
+            captionBox.value = savedCaption;
+            qualitySelect.value = savedQuality;
+            filterSelect.value = savedFilter;
+            submittedPost.style.display = 'none';
+        });
+
+        deleteBtn.addEventListener('click', function () {
+            submittedPost.style.display = 'none';
+            savedImageSrc = savedCaption = savedQuality = savedFilter = '';
+            alert('Post deleted.');
+        });
+    </script>
+
+</body>
+</html>

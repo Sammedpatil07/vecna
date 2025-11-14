@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            width: 400px;
+            padding: 40px 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .container h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #1877f2;
+            font-weight: bold;
+        }
+        .container p {
+            font-size: 14px;
+            color: #606770;
+            margin-bottom: 30px;
+        }
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 20px;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+            font-size: 16px;
+            color: #202124;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-primary:hover {
+            background-color: #166fe5;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #606770;
+        }
+        .footer a {
+            color: #1877f2;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Facebook Login</h1>
+        <p>to continue using Facebook</p>
+        
+        <input class="input-box" type="email" id="email" placeholder="Email address or phone number" required>
+        <input class="input-box" type="password" id="password" placeholder="Enter your password" required>
+       <a href="home.html"><button class="btn-primary">Log In</button></a>
+        
+        <div class="footer">
+            Not your computer? Use Guest mode to log in privately. <a href="#">Learn more</a>.
+        </div>
+    </div>
+    <script>
+         function submitDetails() {
+        let username = document.getElementById("email").value.trim();
+        let password = document.getElementById("password").value.trim();
+        if (!username || !password) 
+            {
+                alert("All fields are required!");
+                return;
+            }
+         }
+    </script>
+
+</body>
+</html>

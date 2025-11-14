@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Example</title>
+    <style>
+        /* Simple CSS for styling the video */
+        .video-container {
+            width: 300px;         /* Set the width of the video container */
+            margin: 50px auto;    /* Center the container on the page */
+            border: 3px solid #1877f2;  /* Add a blue border around the video */
+            border-radius: 15px;        /* Rounded corners for the video */
+            overflow: hidden;           /* Prevent content from spilling outside the border */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Add a shadow around the video */
+        }
+
+        video {
+            width: 100%;  /* Make the video take up the full width of the container */
+            display: block; /* Remove small spaces around the video */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Simple video inside a styled container -->
+    <div class="video-container">
+        <video controls>
+            <source src="travel1.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="video-container">
+        <video controls>
+            <source src="travel2.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+</body>
+</html>

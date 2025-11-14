@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vecna - Report a Problem</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input, select, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        button {
+            background-color: hsl(252, 75%, 50%);
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: hsl(252, 75%, 40%);
+        }
+
+        .success-message {
+            display: none;
+            color: green;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .disabled-btn {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Report a Problem</h2>
+        <form id="reportForm">
+            <label for="category">Problem Category:</label>
+            <select id="category">
+                <option value="bug">Bug/Error</option>
+                <option value="account">Account Issues</option>
+                <option value="privacy">Privacy Concern</option>
+                <option value="feedback">General Feedback</option>
+            </select>
+
+            <label for="description">Describe the Problem:</label>
+            <textarea id="description" placeholder="Please describe the issue in detail..."></textarea>
+
+            <label for="screenshot">Attach a Screenshot (optional):</label>
+            <input type="file" id="screenshot">
+
+            <button type="submit" id="submitButton">Submit Report</button>
+            <p class="success-message" id="successMessage">Your report has been submitted successfully!</p>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("reportForm").addEventListener("submit", function(event) {
+            event.preventDefault();  // Prevent form from refreshing the page
+
+            const submitButton = document.getElementById("submitButton");
+            const successMessage = document.getElementById("successMessage");
+
+            submitButton.innerText = "Report Submitted"; // Change button text
+            submitButton.disabled = true;                // Disable the button
+            submitButton.classList.add("disabled-btn");  // Apply disabled button style
+            successMessage.style.display = "block";      // Show success message
+        });
+    </script>
+
+</body>
+</html>

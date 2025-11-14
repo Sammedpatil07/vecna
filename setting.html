@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vecna - Settings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            
+        }
+
+        body {
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .settings-section {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .toggle-btn {
+            width: auto;
+            padding: 5px 15px;
+            background-color: hsl(252, 75%, 60%);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .toggle-btn:disabled {
+            background-color: hsl(252, 75%, 70%);
+        }
+
+        .logout-btn, .delete-btn {
+            background-color: hsl(252, 75%, 60%);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover, .delete-btn:hover {
+            background-color: hsl(252, 75%, 50%);
+        }
+
+        .disabled-btn {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            color: green;
+            font-weight: bold;
+        }
+        .settings-sections
+        {
+            background-color: hsl(253, 83%, 68%);
+            border-radius: 25px;
+        }
+        .settings-sections:hover
+        {
+            background-color: hsl(253, 87%, 54%);
+            transition: all 0.3ms;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Settings - Vecna</h2>
+
+        <!-- Account Settings -->
+        <div class="settings-section" id="accountSection">
+            <h3>Account Settings</h3>
+            <label for="username">Username:</label>
+            <input type="text" id="username" placeholder="Change your username">
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Update your email">
+
+            <label for="password">Change Password:</label>
+            <input type="password" id="password" placeholder="New password">
+
+            <button class="delete-btn" id="saved" onclick="saved()">Save Changes</button>
+            <button class="logout-btn" id="deactivateButton" onclick="deactivateAccount()">Deactivate Account</button>
+            <button class="delete-btn" id="deleteButton" onclick="deleteAccount()">Delete Account</button>
+        </div>
+
+        <!-- Privacy Settings -->
+        <div class="settings-section">
+            <h3>Privacy Settings</h3>
+            <label>Profile Visibility:</label>
+            <select>
+                <option>Public</option>
+                <option>Private</option>
+                <option>Friends Only</option>
+            </select>
+
+            <label>Who Can See Your Posts:</label>
+            <select>
+                <option>Everyone</option>
+                <option>Friends Only</option>
+                <option>Only Me</option>
+            </select>
+        </div>
+
+        <!-- Notifications Settings -->
+        <div class="settings-section">
+            <h3>Notifications</h3>
+            <label>Push Notifications:</label>
+            <button class="toggle-btn" id="pushToggle" onclick="togglePush()">Toggle On</button>
+
+            <label>Email Notifications:</label>
+            <input type="checkbox"> Receive weekly updates<br>
+            <input type="checkbox"> Notify me about new followers<br>
+            <input type="checkbox"> Notify me when tagged<br>
+        </div>
+
+        <!-- Support and Help -->
+        <div class="settings-section">
+            <h3>Support and Help</h3>
+            <a href="help.html"><button class="settings-sections">Visit Help Center</button></a>
+            <a href="report.html"><button class="settings-sections">Report a Problem</button></a>
+        </div>
+        <a href="login.html"><button class="delete-btn" id="logout" onclick="logout()">Log Out</button></a>
+    </div>
+
+    <script>
+        function saved() {
+            const section = document.getElementById("saved");
+            section.remove(); // Remove the entire account settings section
+            alert("Saved Successfully!.");
+        }
+        function logout() {
+            const section = document.getElementById("logout");
+            section.remove(); // Remove the entire account settings section
+            alert("Logout Successfully!.");
+        }
+        // Deactivate Account Action
+        function deactivateAccount() {
+            const section = document.getElementById("accountSection");
+            section.innerHTML = `<p class="success-message">Your account has been deactivated.</p>`;
+            alert("Your account has been deactivated.");
+        }
+
+        // Delete Account Action
+        function deleteAccount() {
+            const section = document.getElementById("accountSection");
+            section.remove(); // Remove the entire account settings section
+            alert("Your account has been permanently deleted.");
+        }
+
+        // Toggle Push Notifications
+        function togglePush() {
+            const button = document.getElementById("pushToggle");
+            if (button.innerText === "Toggle On") {
+                button.innerText = "Toggle Off";
+                button.style.backgroundColor = 'hsl(0, 70%, 50%)';  // Red when toggled off
+            } else {
+                button.innerText = "Toggle On";
+                button.style.backgroundColor = 'hsl(252, 75%, 60%)'; // Purple when toggled on
+            }
+        }
+    </script>
+
+</body>
+</html>

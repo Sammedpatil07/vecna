@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vecna Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #384150, #3e4b69, #ac6be0);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            animation: backgroundShift 6s infinite alternate ease-in-out;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% {
+                background: linear-gradient(135deg, #1E293B, #0F172A, #6B21A8);
+            }
+            50% {
+                background: linear-gradient(135deg, #312E81, #6D28D9, #9333EA);
+            }
+        }
+
+        .login-container {
+            background: rgba(40, 40, 70, 0.85);
+            padding: 45px 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 50px rgba(108, 99, 255, 0.7);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .branding h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FFFFFF;
+            text-shadow: 0 0 30px rgba(59, 36, 184, 0.8);
+            margin-bottom: 12px;
+        }
+
+        .branding span {
+            color: #A78BFA;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: box-shadow 0.3s ease-in-out, transform 0.2s ease;
+        }
+
+        .input-group input:focus {
+            box-shadow: 0 0 15px rgba(167, 139, 250, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #6D28D9, #9333EA);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 5px 25px rgba(133, 102, 255, 0.7);
+            transition: all 0.4s ease-in-out;
+        }
+
+        .login-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 35px rgba(153, 102, 255, 1);
+        }
+
+        .social-icons {
+            margin-top: 20px;
+        }
+
+        .social-icons img {
+            width: 50px;
+            height: 50px;
+            margin: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .social-icons img:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 25px rgba(108, 92, 255, 1);
+        }
+
+        .signup-text {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .signup-text a {
+            color: #A78BFA;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .signup-text a:hover {
+            text-decoration: underline;
+        }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="branding">
+            <h1>Welcome to <span>Vecna</span></h1>
+        </div>
+        <form action="#" method="post">
+            <div class="input-group">
+                <input type="email" id="email" name="email" required placeholder="Enter Email">
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" name="password" required placeholder="Enter Password">
+            </div>
+        </form>
+        <div>
+            <a href="home.html"><button onclick="submitDetails()" class="login-btn">Login</button></a>
+         </div>
+
+        <div class="social-icons">
+            <p>Connect with:</p>
+           <a href="google.html"> <img src="download.png" alt="Google"></a>
+           <a href="facebook.html"><img src="fb.jpg" alt="Facebook"></a>
+        </div>
+
+        <p class="signup-text">Don't have an account? <a href="signup.html">Sign up for Vecna</a></p>
+    </div>
+    <div class="container hidden" id="success-container">
+        <h2>Details Received Successfully! ✅</h2>
+        <p><strong>Username:</strong> <span id="email"></span></p>
+        <p><strong>password:</strong> <span id="password"></span></p>
+    </div>
+    <script>
+        function submitDetails() {
+        let username = document.getElementById("email").value.trim();
+        let password = document.getElementById("password").value.trim();
+        if (!username || !password) 
+            {
+                alert("All fields are required!");
+                return;
+            }
+            let userDetails = { username, password};
+            localStorage.setItem("userDetails", JSON.stringify(userDetails));
+
+            displaySuccess();
+        }
+        function displaySuccess() {
+            let userData = JSON.parse(localStorage.getItem("userDetails"));
+            
+
+            document.getElementById("email").innerText = userData.email;
+            document.getElementById("password").innerText = userData.password; 
+
+
+            document.getElementById("login-container").classList.add("hidden");
+            document.getElementById("success-container").classList.remove("hidden");
+        }
+
+        // Auto-display success page if data is already in localStorage
+        if (localStorage.getItem("userDetails")) {
+            displaySuccess();
+        }
+</script>
+</body>
+</html>

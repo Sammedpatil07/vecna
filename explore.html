@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Page - Real-Time Media Access</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+
+        .navbar {
+            background-color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: #1877f2;
+        }
+
+        .search-bar {
+            display: flex;
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px;
+            padding-left: 40px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            outline: none;
+        }
+
+        .categories {
+            display: flex;
+            overflow-x: auto;
+            padding: 15px 10px;
+            background-color: #fff;
+            margin: 10px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            white-space: nowrap;
+        }
+
+        .category-btn {
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background-color: #1877f2;
+            color: #fff;
+            border-color: #1877f2;
+        }
+
+        .explore-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .explore-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            cursor: pointer;
+            background-color: #eee;
+        }
+
+        .explore-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease-in-out;
+        }
+
+        .explore-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .explore-item:hover .overlay {
+            opacity: 1;
+        }
+
+        .explore-item .text {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+        }
+
+        .explore-item:hover .text {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .load-more-btn {
+            margin: 30px auto;
+            padding: 10px 20px;
+            background-color: #1877f2;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            display: block;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .load-more-btn:hover {
+            background-color: #165dd6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">Vecna Explore</div>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search Explore...">
+        </div>
+    </div>
+
+    <div class="categories">
+        <button class="category-btn active" onclick="filterPosts('all')">All</button>
+        <a href="v1.html"><button class="category-btn" onclick="filterPosts('adventure')">Adventure</button></a>
+        <a href="v5.html"><button class="category-btn" onclick="filterPosts('fashion')">Fashion</button></a>
+        <a href="v2.html"><button class="category-btn" onclick="filterPosts('travel')">Travel</button></a> 
+       <a href="v4.html"><button class="category-btn" onclick="filterPosts('nature')">Nature</button></a>
+       <a href="v.html"><button class="category-btn" onclick="filterPosts('food')">Food</button></a>
+       <a href="v3.html"><button class="category-btn" onclick="filterPosts('music')">Music</button></a>
+    </div>
+
+    <div class="explore-grid" id="exploreGrid">
+        <!-- Posts will be dynamically inserted here by JavaScript -->
+    </div>
+
+    <button class="load-more-btn" onclick="loadMorePosts()">Load More</button>
+
+    <script>
+        const posts = [
+            { category: 'adventure', image: 'adv.jpeg', text: 'Adventure' },
+            { category: 'fashion', image: 'p3s.jpeg', text: 'Fashion' },
+            { category: 'travel', image: 'travel.jpeg', text: 'Travel' },
+            { category: 'nature', image: 'nature.jpeg', text: 'Nature' },
+            { category: 'food', image: 'foods.jpeg', text: 'Food' },
+            { category: 'music', image: 'musics.jpeg', text: 'Music' },
+          
+        ];
+        
+        let displayedPosts = 0;
+
+        function loadPosts(count = 6) {
+            const grid = document.getElementById('exploreGrid');
+            for (let i = displayedPosts; i < displayedPosts + count && i < posts.length; i++) {
+                const post = posts[i];
+                const postElement = document.createElement('div');
+                postElement.classList.add('explore-item');
+                postElement.setAttribute('data-category', post.category);
+                postElement.innerHTML = `
+
+                    <img src="${post.image}" alt="${post.text}">
+                    <div class="overlay"></div>
+                    <div class="text">${post.text}</div>
+                `;
+                grid.appendChild(postElement);
+            }
+            displayedPosts += count;
+        }
+
+        function loadMorePosts() {
+            loadPosts();
+        }
+
+        function filterPosts(category) {
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.category-btn[onclick="filterPosts('${category}')"]`).classList.add('active');
+
+            const allPosts = document.querySelectorAll('.explore-item');
+            allPosts.forEach(post => {
+                post.style.display = (category === 'all' || post.getAttribute('data-category') === category) ? 'block' : 'none';
+            });
+        }
+
+        loadPosts(); // Initial post loading
+    </script>
+
+</body>
+</html>
