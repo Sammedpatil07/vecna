@@ -1,0 +1,299 @@
+:root {
+    /* Light Mode Variables */
+    --bg-color: #ffffff;
+    --text-color: #262626;
+    --secondary-bg-color: #efefef;
+    --light-bg-color: #f0f0f0;
+    --link-color: #0095f6;
+    --border-color: #dbdbdb;
+    --button-bg-color: #efefef; /* Light grey for buttons */
+    --button-text-color: #262626;
+    --tab-inactive-color: #8e8e8e;
+}
+
+/* Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body.light-mode {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Main Profile Content */
+.profile-content {
+    width: 100%;
+    max-width: 935px; /* Standard Instagram max-width */
+    padding: 30px 20px 0;
+}
+
+/* Profile Header */
+.profile-header {
+    display: flex;
+    padding: 20px 0;
+    margin-bottom: 24px;
+}
+
+.profile-avatar-container {
+    flex-basis: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    /* White/light border for contrast */
+    border: 1px solid var(--border-color);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Note Feature Styling */
+.note-icon {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 500;
+    transform: translate(50%, 0); /* Move outside the circle */
+}
+
+.profile-info {
+    flex-basis: 70%;
+    padding-left: 30px;
+}
+
+.username-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.profile-info h2 {
+    font-size: 28px;
+    font-weight: 300;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.verified-icon {
+    font-size: 18px;
+    color: var(--link-color);
+    margin-left: 5px;
+}
+
+.stats {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.stats span ** {
+    font-weight: 600;
+}
+
+.full-name {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.bio p {
+    margin-bottom: 2px;
+}
+
+.blue-link {
+    color: var(--link-color);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.black-link {
+    font-weight: 500;
+}
+
+.links {
+    margin-top: 5px;
+}
+
+.links span {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2px;
+}
+
+.link-icon {
+    font-size: 16px;
+    margin-right: 4px;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.btn {
+    padding: 6px 16px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    flex-grow: 1; /* Make buttons grow to fill space */
+}
+
+.primary-btn, .secondary-btn {
+    background-color: var(--button-bg-color);
+    color: var(--button-text-color);
+    border: 1px solid var(--border-color);
+}
+
+/* Story Highlights */
+.story-highlights {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 44px;
+    padding-left: 30px;
+}
+
+.highlight-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80px;
+}
+
+.highlight-circle {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background-color: var(--light-bg-color);
+    margin-bottom: 5px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-highlight {
+    background-color: transparent;
+    border: 1px dashed var(--border-color);
+}
+
+.add-icon {
+    font-size: 30px;
+    color: var(--text-color);
+}
+
+.highlight-label {
+    font-size: 12px;
+    text-align: center;
+}
+
+/* Content Tabs */
+.content-tabs {
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid var(--border-color);
+    margin-bottom: 0;
+}
+
+.tab-item {
+    padding: 16px 30px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--tab-inactive-color);
+    border-top: 1px solid transparent;
+}
+
+.tab-item.active {
+    color: var(--text-color);
+    border-top: 1px solid var(--text-color);
+    margin-top: -1px;
+}
+
+.tab-item i {
+    font-size: 24px;
+}
+
+/* Posts Grid */
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    margin-top: 3px; /* To separate tabs from grid */
+}
+
+.post-placeholder {
+    aspect-ratio: 1 / 1;
+    background-color: var(--light-bg-color);
+    border: 1px solid var(--border-color); /* Light border to show separation */
+}
+
+/* Mock Bottom Navigation (if simulating mobile/smaller screen view) */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    background-color: var(--bg-color);
+    border-top: 1px solid var(--border-color);
+}
+
+.bottom-nav i {
+    font-size: 28px;
+    color: var(--tab-inactive-color);
+    cursor: pointer;
+}
+
+.bottom-nav i.active {
+    color: var(--text-color);
+}
+
+.settings-gear {
+    position: absolute;
+    left: 20px;
+    bottom: 10px;
+}

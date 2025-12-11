@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile Clone</title>
+    <link rel="stylesheet" href="Edit-profile.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="light-mode">
+   <div class="bg"><div class="edit-profile-container">
+        <h1 class="page-title">Edit profile</h1>
+
+        <form class="profile-form">
+            <div class="form-section profile-photo-section">
+                <div class="profile-photo-info">
+                    <div class="profile-avatar">
+                        <img src="assets/m.jpeg" alt="Profile Picture">
+                    </div>
+                    <div>
+                        <p class="username">sammedpatil_07</p>
+                        <p class="full-name">Sammed Patil</p>
+                    </div>
+                </div>
+                <button type="button" class="change-photo-btn">Change photo</button>
+            </div>
+
+            <div class="form-section field-group">
+                <label for="website">Website</label>
+                <div class="input-container">
+                    <input type="text" id="website" value="youtu.be/kd6fHuEuwZM" readonly>
+                </div>
+                <p class="help-text">Editing your links is only available on mobile. Visit the Instagram app and edit your profile to change the websites in your bio.</p>
+            </div>
+
+            <div class="form-section field-group">
+                <label for="bio">Bio</label>
+                <div class="input-container">
+                    <textarea id="bio" rows="3" placeholder="Add your bio...">YouTube:-ÆSTRLPLAYS
+Athletic</textarea>
+                    <span class="char-count">28 / 150</span>
+                </div>
+            </div>
+
+            <div class="form-section field-group toggle-group">
+                <label>Show Threads badge</label>
+                <div class="toggle-container">
+                    <p>Show Threads badge</p>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-section field-group">
+                <label for="gender">Gender</label>
+                <div class="select-container">
+                    <select id="gender">
+                        <option value="male" selected>Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                        <option value="prefer-not-say">Prefer not to say</option>
+                    </select>
+                    <span class="material-icons dropdown-icon">arrow_drop_down</span>
+                </div>
+                <p class="help-text small-text">This won't be part of your public profile.</p>
+            </div>
+
+            <div class="form-section field-group toggle-group suggestion-group">
+                <label>Show account suggestions on profiles</label>
+                <div class="toggle-container">
+                    <p class="toggle-label">Show account suggestions on profiles</p>
+                    <p class="help-text">Choose whether people can see similar account suggestions on your profile, and whether your account can be suggested on other profiles.</p>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <p class="info-footer">
+                Certain profile info, like your name, bio and links, is visible to everyone. <a href="#" class="blue-link">See what profile info is visible</a>
+            </p>
+
+            <div class="submit-footer">
+                <button type="submit" class="submit-btn" disabled>Submit</button>
+            </div>
+        </form>
+    </div>
+   </div>
+    <script src="Edit-profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Story Clone</title>
+    <link rel="stylesheet" href="storyback.css">
+</head>
+<body>
+
+    <div class="stories-container">
+       
+
+        <div class="story-main" data-story-id="story2">
+            <div class="story-bg" style="background-image: url('assets/adv.jpeg');"></div>
+            
+            <div class="story-overlay">
+                <div class="story-header">
+                    <div class="story-progress-bar">
+                        <div class="progress-segment active" data-story-segment="1"></div>
+                        <div class="progress-segment" data-story-segment="2"></div>
+                        <div class="progress-segment" data-story-segment="3"></div>
+                    </div>
+                    
+                    <div class="story-user-info">
+                        <img src="yashvi_profile.jpg" alt="vibe.with.yashvi24" class="profile-pic">
+                        <span class="username">vibe.with.yashvi24</span>
+                        <span class="time">20h</span>
+                        <span class="more-options">...</span>
+                        <button class="close-btn" onclick="document.querySelector('.stories-container').style.display='none'">&times;</button>
+                    </div>
+                </div>
+
+                <div class="story-content">
+                                        <p class="story-caption">@LANCOMEOFFICIAL @MYNYKAA</p>
+                </div>
+
+                <div class="story-footer">
+                    <input type="text" placeholder="" class="reply-input">
+                    <div class="action-icons">
+                        <span class="heart-icon">❤️</span> 
+                    </div>
+                </div>
+
+                <div class="nav-area nav-prev" onclick="navigateStory(-1)"></div>
+                <div class="nav-area nav-next" onclick="navigateStory(1)"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="storyback.js"></script>
+</body>
+</html>

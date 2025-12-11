@@ -1,0 +1,331 @@
+:root {
+    /* Light Mode Variables */
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --secondary-text-color: #737373;
+    --border-color: #dbdbdb;
+    --input-bg-color: #fafafa;
+    --button-primary: #4a90e2; /* Blue button */
+    --button-primary-hover: #3a7fd0;
+    --blue-link: #0095f6;
+    --toggle-on: #0095f6;
+    --toggle-off: #ccc;
+    --grey-input-border: #dbdbdb;
+}
+
+/* Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body.light-mode {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-size: 14px;
+    line-height: 1.5;
+
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.edit-profile-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 24px;
+    background-color:lightgray;
+    border-radius: 20px;
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: 300;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Form Sections and Layout */
+.profile-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-section {
+    padding: 16px 0;
+    display: flex;
+    align-items: flex-start;
+}
+
+.field-group {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.field-group > label {
+    flex-basis: 30%;
+    padding-top: 8px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.field-group > div {
+    flex-basis: 70%;
+    margin-bottom: 10px;
+}
+
+/* Profile Photo Section */
+.profile-photo-section {
+    border-bottom: 1px solid var(--border-color);
+    align-items: center;
+    padding-bottom: 24px;
+}
+
+.profile-photo-info {
+    display: flex;
+    align-items: center;
+    flex-basis: 30%;
+}
+
+.profile-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 16px;
+    background-color: var(--input-bg-color);
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-photo-info .username {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.profile-photo-info .full-name {
+    color: var(--secondary-text-color);
+    font-size: 13px;
+}
+
+.change-photo-btn {
+    background-color: var(--button-primary);
+    color: var(--bg-color);
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.change-photo-btn:hover {
+    background-color: var(--button-primary-hover);
+}
+
+/* Input and Textarea Styling */
+.input-container {
+    position: relative;
+    width: 100%;
+}
+
+.input-container input,
+.input-container textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--grey-input-border);
+    border-radius: 6px;
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    font-size: 14px;
+    resize: none;
+}
+
+.input-container textarea {
+    height: 70px;
+}
+
+.char-count {
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+    font-size: 12px;
+    color: var(--secondary-text-color);
+}
+
+.help-text {
+    color: var(--secondary-text-color);
+    font-size: 12px;
+    margin-top: 4px;
+    flex-basis: 70%;
+    margin-left: 30%; /* Align with the input field */
+}
+
+/* Select Dropdown Styling */
+.select-container {
+    position: relative;
+    width: 100%;
+}
+
+.select-container select {
+    appearance: none; /* Remove default browser styling */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    padding: 8px 30px 8px 12px;
+    border: 1px solid var(--grey-input-border);
+    border-radius: 6px;
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.select-container .dropdown-icon {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    font-size: 20px;
+    pointer-events: none; /* Icon shouldn't interfere with select click */
+    color: var(--secondary-text-color);
+}
+
+/* Toggle Switch Styling */
+.toggle-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.toggle-group > label {
+    flex-basis: 100%;
+    margin-bottom: 8px;
+}
+
+.toggle-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 8px 0;
+}
+
+.toggle-container p {
+    font-weight: 500;
+}
+
+.suggestion-group .toggle-container {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.suggestion-group .toggle-container .toggle-label {
+    margin-bottom: 4px;
+}
+
+.suggestion-group .help-text {
+    flex-basis: 100%;
+    margin-left: 0;
+    margin-bottom: 10px;
+}
+
+/* The actual switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--toggle-off);
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: var(--toggle-on);
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px var(--toggle-on);
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+.slider.round {
+    border-radius: 24px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Footer and Submit Button */
+.info-footer {
+    padding: 20px 0;
+    color: var(--secondary-text-color);
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.blue-link {
+    color: var(--blue-link);
+    cursor: pointer;
+}
+
+.submit-footer {
+    padding: 16px 0;
+    text-align: right;
+}
+
+.submit-btn {
+    background-color: var(--button-primary);
+    color: var(--bg-color);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.submit-btn:enabled {
+    opacity: 1;
+    cursor: pointer;
+}

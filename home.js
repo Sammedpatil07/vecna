@@ -1,3 +1,30 @@
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Select all h6 elements within the .category container
+        const categoryTabs = document.querySelectorAll('.category h6');
+
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                
+                // 1. Remove the 'active' class from all tabs
+                categoryTabs.forEach(t => {
+                    t.classList.remove('active');
+                });
+                
+                // 2. Add the 'active' class to the tab that was clicked
+                tab.classList.add('active');
+
+                // Optional: If you click the Requests tab, you may want to reset the count/notification state here
+                if (tab.classList.contains('message-requests')) {
+                    // Example action: Remove the notification count after clicking
+                    // tab.textContent = 'Request';
+                }
+            });
+        });
+    });
+
+
+
 //SIDEBAR
 const menuItems = document.querySelectorAll('.menu-item');
 
@@ -75,6 +102,42 @@ messagesNotification.addEventListener('click', () =>
     }, 2000);
 
 })
+// 1. Get references to the elements
+const notifications = document.querySelector('#notifications'); // The element the user clicks (the bell/icon)
+const notificationPopup = document.querySelector('.left .notification-popup'); // The popup element itself
+
+// 2. Define the function to toggle the class
+const toggleNotificationsPopup = () => {
+    // This will add the 'show-popup' class if it's not present, 
+    // and remove it if it is present.
+    notificationPopup.classList.toggle('show-popup');
+}
+
+// 3. Attach the event listener
+notifications.addEventListener('click', toggleNotificationsPopup);
+
+
+// *** NOTE on your existing message notification code: ***
+// The code you provided handles the 'messages' element's box-shadow, 
+// not the notification popup. If 'messagesNotification' is also the 
+// element you click to show this popup, you should reuse that selector.
+
+/* If 'messagesNotification' is the correct clickable element:
+messagesNotification.addEventListener('click', () => 
+{
+    // Toggle the display of your main notification popup
+    notificationPopup.classList.toggle('show-popup'); 
+
+    // Your existing message box-shadow logic (for a *different* element)
+    messages.style.boxShadow = '0 0 1rem var(--color-primary)';
+    messagesNotification.querySelector('.notification-count').style.display = 'none';
+    setTimeout(() => 
+    {
+        messages.style.boxShadow = 'none';
+    }, 2000);
+})
+*/
+
 //THEME /DISPLAY CUSTAMIZATION
 //opens modal
 const openThemeModal = () => {
@@ -259,3 +322,5 @@ Bg2.addEventListener('click', () =>
           // Toggle the background color
           button.classList.toggle('red-bg');
         });
+
+    

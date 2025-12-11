@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vecna Shots - Interactive</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- 1. Reset & Base Layout --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #000; color: white; display: flex; justify-content: center; height: 100vh; overflow: hidden; }
+
+        /* --- 2. Main App Container --- */
+        .app-container {
+            width: 100%; max-width: 450px; height: 100%; position: relative;
+            background-color: #000; overflow-y: scroll; scroll-snap-type: y mandatory;
+            scroll-behavior: smooth; scrollbar-width: none;
+        }
+        .app-container::-webkit-scrollbar { display: none; }
+
+        /* --- 3. Reel Section --- */
+        .reel {
+            width: 100%; height: 100%; position: relative;
+            scroll-snap-align: start; scroll-snap-stop: always; background-color: #111;
+        }
+        .reel video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        /* --- 4. Overlay UI --- */
+        .overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            display: flex; align-items: flex-end; justify-content: space-between; pointer-events: none; 
+        }
+        .overlay * { pointer-events: auto; }
+
+        .reel-details { display: flex; flex-direction: column; gap: 10px; width: 80%; }
+        .user-profile { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; }
+        .user-profile img { width: 32px; height: 32px; border-radius: 50%; border: 2px solid white; }
+        
+        /* FOLLOW BUTTON STYLING */
+        .user-profile button { 
+            background: transparent; 
+            border: 1px solid rgba(255,255,255,0.6); 
+            color: white; 
+            padding: 2px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            cursor: pointer; 
+            transition: all 0.2s;
+        }
+        
+        /* STYLE FOR WHEN THE USER IS FOLLOWING */
+        .user-profile button.following {
+            background-color: white;
+            color: black;
+            border: 1px solid white;
+        }
+
+        .description { font-size: 14px; line-height: 1.4; }
+        .music-tag { font-size: 13px; display: flex; align-items: center; gap: 5px; }
+
+        /* Right Side Actions */
+        .actions { display: flex; flex-direction: column; align-items: center; gap: 20px; margin-bottom: 10px; }
+        .action-btn { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; }
+        .action-btn i { font-size: 28px; text-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: transform 0.2s; }
+        .action-btn i:active { transform: scale(0.8); }
+        .action-btn span { font-size: 12px; font-weight: 600; }
+        .liked { color: #ff3b5c; }
+
+        /* Animations */
+        .double-tap-heart {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+            color: white; font-size: 100px; opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+            z-index: 20;
+        }
+        .double-tap-heart.active { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+        
+        .header { position: absolute; top: 20px; left: 20px; z-index: 10; font-weight: bold; font-size: 22px; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+        
+        .center-play-icon {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 60px; color: rgba(255, 255, 255, 0.8); pointer-events: none;
+            opacity: 0; transition: opacity 0.2s ease; z-index: 5; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+        }
+        .show-play-icon { opacity: 1; }
+
+        /* --- 5. MODAL / BOTTOM SHEET STYLES (Existing Modal CSS remains the same) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 100; display: none; opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .modal-overlay.open { display: block; opacity: 1; }
+
+        .bottom-sheet {
+            position: fixed; bottom: -100%; left: 0; width: 100%;
+            background: #1e1e1e; border-radius: 15px 15px 0 0;
+            z-index: 101; transition: bottom 0.3s cubic-bezier(0.1, 0.7, 0.1, 1);
+            display: flex; flex-direction: column; max-height: 70%;
+        }
+        /* Center sheet on desktop */
+        @media (min-width: 450px) {
+            .bottom-sheet { width: 450px; left: 50%; transform: translateX(-50%); }
+        }
+
+        .bottom-sheet.open { bottom: 0; }
+
+        .sheet-header {
+            padding: 15px; border-bottom: 1px solid #333;
+            text-align: center; font-weight: bold; position: relative;
+        }
+        .close-sheet { position: absolute; right: 15px; top: 15px; background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
+
+        /* Comment Specifics */
+        .comments-list { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 15px; }
+        .comment-item { display: flex; gap: 10px; font-size: 13px; }
+        .comment-item img { width: 30px; height: 30px; border-radius: 50%; }
+        .comment-text b { display: block; margin-bottom: 2px; color: #ddd; }
+        .comment-text p { color: #aaa; margin: 0; }
+        
+        .comment-input-area {
+            padding: 15px; border-top: 1px solid #333; display: flex; gap: 10px; align-items: center; background: #1e1e1e;
+        }
+        .comment-input-area input {
+            flex: 1; background: #333; border: none; padding: 10px 15px; border-radius: 20px; color: white; outline: none;
+        }
+        .comment-input-area button { background: none; border: none; color: #3498db; font-weight: bold; cursor: pointer; }
+
+        /* Share & Options List */
+        .options-list { padding: 20px; display: flex; flex-direction: column; gap: 5px; }
+        .option-item {
+            padding: 15px; display: flex; align-items: center; gap: 15px;
+            cursor: pointer; border-radius: 8px; transition: background 0.2s;
+        }
+        .option-item:hover { background: #333; }
+        .option-item i { width: 25px; text-align: center; font-size: 20px; }
+        
+        /* Grid for Share */
+        .share-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 20px; text-align: center; }
+        .share-item { display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 11px; color: #ccc; cursor: pointer; }
+        .share-icon { width: 50px; height: 50px; background: #333; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="header">Shots</div>
+
+        <div class="reel">
+            <video src="assets/WhatsApp Video 2025-11-29 at 11.36.36 PM.mp4"></video>
+            <i class="fa-solid fa-play center-play-icon"></i>
+            <i class="fa-solid fa-heart double-tap-heart"></i>
+            <div class="overlay">
+                <div class="reel-details">
+                    <div class="user-profile">
+                        <img src="https://i.pravatar.cc/100?img=1" alt="User">
+                        <span>neon_vibes</span>
+                        <button id="follow-btn-1" onclick="toggleFollow(this)">Follow</button>
+                    </div>
+                    <div class="description">Late night walks in the city 🌃 #neon #vibes</div>
+                    <div class="music-tag"><i class="fa-solid fa-music"></i> <span>Original Audio</span></div>
+                </div>
+                <div class="actions">
+                    <div class="action-btn" onclick="toggleLike(this)"><i class="fa-regular fa-heart"></i><span>12.4K</span></div>
+                    <div class="action-btn" onclick="openComments()"><i class="fa-regular fa-comment"></i><span>542</span></div>
+                    <div class="action-btn" onclick="openShare()"><i class="fa-regular fa-paper-plane"></i><span>Share</span></div>
+                    <div class="action-btn" onclick="openOptions()"><i class="fa-solid fa-ellipsis-vertical"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="reel">
+            <video src="bad.mp4" loop muted></video>
+            <i class="fa-solid fa-play center-play-icon"></i>
+            <i class="fa-solid fa-heart double-tap-heart"></i>
+            <div class="overlay">
+                <div class="reel-details">
+                    <div class="user-profile">
+                        <img src="https://i.pravatar.cc/100?img=5" alt="User">
+                        <span>nature_lover</span>
+                        <button id="follow-btn-2" onclick="toggleFollow(this)">Follow</button>
+                    </div>
+                    <div class="description">Yellow flowers blooming 🌻 #nature #spring</div>
+                    <div class="music-tag"><i class="fa-solid fa-music"></i> <span>Relaxing Sounds</span></div>
+                </div>
+                <div class="actions">
+                    <div class="action-btn" onclick="toggleLike(this)"><i class="fa-regular fa-heart"></i><span>8.2K</span></div>
+                    <div class="action-btn" onclick="openComments()"><i class="fa-regular fa-comment"></i><span>120</span></div>
+                    <div class="action-btn" onclick="openShare()"><i class="fa-regular fa-paper-plane"></i><span>Share</span></div>
+                    <div class="action-btn" onclick="openOptions()"><i class="fa-solid fa-ellipsis-vertical"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="reel">
+            <video src="@IshwarGandh - Discord 2025-08-23 21-12-48.mp4" loop muted></video>
+            <i class="fa-solid fa-play center-play-icon"></i>
+            <i class="fa-solid fa-heart double-tap-heart"></i>
+            <div class="overlay">
+                <div class="reel-details">
+                    <div class="user-profile">
+                        <img src="https://i.pravatar.cc/100?img=8" alt="User">
+                        <span>ocean_blue</span>
+                        <button id="follow-btn-3" onclick="toggleFollow(this)">Follow</button>
+                    </div>
+                    <div class="description">Can't get enough of this view 🌊 #ocean</div>
+                    <div class="music-tag"><i class="fa-solid fa-music"></i> <span>Ocean Waves</span></div>
+                </div>
+                <div class="actions">
+                    <div class="action-btn" onclick="toggleLike(this)"><i class="fa-regular fa-heart"></i><span>22K</span></div>
+                    <div class="action-btn" onclick="openComments()"><i class="fa-regular fa-comment"></i><span>900</span></div>
+                    <div class="action-btn" onclick="openShare()"><i class="fa-regular fa-paper-plane"></i><span>Share</span></div>
+                    <div class="action-btn" onclick="openOptions()"><i class="fa-solid fa-ellipsis-vertical"></i></div>
+                </div>
+            </div>
+        </div>
+
+    </div> <div class="modal-overlay" onclick="closeAllModals()"></div>
+
+    <div id="comments-sheet" class="bottom-sheet">
+        <div class="sheet-header">Comments<button class="close-sheet" onclick="closeAllModals()">&times;</button></div>
+        <div class="comments-list" id="commentsList">
+            <div class="comment-item">
+                <img src="https://i.pravatar.cc/100?img=12" alt="u">
+                <div class="comment-text"><b>alex_star</b><p>This is such a vibe! 🔥</p></div>
+            </div>
+            <div class="comment-item">
+                <img src="https://i.pravatar.cc/100?img=32" alt="u">
+                <div class="comment-text"><b>sarah_j</b><p>Where is this location? 😍</p></div>
+            </div>
+        </div>
+        <div class="comment-input-area">
+            <img src="https://i.pravatar.cc/100?img=60" style="width:30px;height:30px;border-radius:50%">
+            <input type="text" id="commentInput" placeholder="Add a comment...">
+            <button onclick="postComment()">Post</button>
+        </div>
+    </div>
+
+    <div id="share-sheet" class="bottom-sheet">
+        <div class="sheet-header">Share to<button class="close-sheet" onclick="closeAllModals()">&times;</button></div>
+        <div class="share-grid">
+            <div class="share-item"><div class="share-icon" style="background:#25D366"><i class="fa-brands fa-whatsapp"></i></div>WhatsApp</div>
+            <div class="share-item"><div class="share-icon" style="background:#0088cc"><i class="fa-brands fa-telegram"></i></div>Telegram</div>
+            <div class="share-item"><div class="share-icon" style="background:#1DA1F2"><i class="fa-brands fa-twitter"></i></div>Twitter</div>
+            <div class="share-item" onclick="copyLink()"><div class="share-icon" style="background:#333"><i class="fa-solid fa-link"></i></div>Copy Link</div>
+        </div>
+    </div>
+
+    <div id="options-sheet" class="bottom-sheet">
+        <div class="sheet-header">Options<button class="close-sheet" onclick="closeAllModals()">&times;</button></div>
+        <div class="options-list">
+            <div class="option-item" style="color:#ff3b5c"><i class="fa-solid fa-circle-exclamation"></i> Report</div>
+            <div class="option-item"><i class="fa-regular fa-bookmark"></i> Save</div>
+            <div class="option-item"><i class="fa-solid fa-eye-slash"></i> Not interested</div>
+            <div class="option-item"><i class="fa-solid fa-closed-captioning"></i> Captions</div>
+        </div>
+    </div>
+
+<script>
+    // --- 1. Follow Button Logic ---
+    function toggleFollow(button) {
+        if (button.textContent === "Follow") {
+            button.textContent = "Following";
+            button.classList.add('following');
+        } else {
+            button.textContent = "Follow";
+            button.classList.remove('following');
+        }
+    }
+    
+    // --- 2. Video Play/Pause & Scroll Logic ---
+    const reels = document.querySelectorAll('.reel');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const video = entry.target.querySelector('video');
+            const playIcon = entry.target.querySelector('.center-play-icon');
+            if (entry.isIntersecting) {
+                video.currentTime = 0;
+                video.play().catch(()=>{});
+                playIcon.classList.remove('show-play-icon');
+            } else {
+                video.pause();
+            }
+        });
+    }, { threshold: 0.6 });
+
+    reels.forEach(reel => {
+        observer.observe(reel);
+        const video = reel.querySelector('video');
+        const playIcon = reel.querySelector('.center-play-icon');
+        const heartAnim = reel.querySelector('.double-tap-heart');
+        const likeBtn = reel.querySelector('.action-btn i');
+
+        // Click to Pause/Play
+        video.addEventListener('click', () => {
+            if(video.paused) {
+                video.play();
+                playIcon.classList.remove('show-play-icon');
+            } else {
+                video.pause();
+                playIcon.classList.add('show-play-icon');
+            }
+        });
+
+        // Double Click to Like
+        video.addEventListener('dblclick', () => {
+            heartAnim.classList.add('active');
+            likeBtn.classList.remove('fa-regular');
+            likeBtn.classList.add('fa-solid', 'liked');
+            setTimeout(() => heartAnim.classList.remove('active'), 800);
+        });
+    });
+
+    function toggleLike(element) {
+        const icon = element.querySelector('i');
+        icon.classList.toggle('fa-solid');
+        icon.classList.toggle('fa-regular');
+        icon.classList.toggle('liked');
+        icon.style.transform = 'scale(1.2)';
+        setTimeout(() => icon.style.transform = 'scale(1)', 200);
+    }
+
+    // --- 3. Modal Logic (Comments, Share, Options) ---
+    const overlay = document.querySelector('.modal-overlay');
+    const commentsSheet = document.getElementById('comments-sheet');
+    const shareSheet = document.getElementById('share-sheet');
+    const optionsSheet = document.getElementById('options-sheet');
+
+    function closeAllModals() {
+        overlay.classList.remove('open');
+        commentsSheet.classList.remove('open');
+        shareSheet.classList.remove('open');
+        optionsSheet.classList.remove('open');
+    }
+
+    function openComments() {
+        closeAllModals();
+        overlay.classList.add('open');
+        commentsSheet.classList.add('open');
+    }
+
+    function openShare() {
+        closeAllModals();
+        overlay.classList.add('open');
+        shareSheet.classList.add('open');
+    }
+
+    function openOptions() {
+        closeAllModals();
+        overlay.classList.add('open');
+        optionsSheet.classList.add('open');
+    }
+
+    // --- 4. Functional Comment System ---
+    function postComment() {
+        const input = document.getElementById('commentInput');
+        const list = document.getElementById('commentsList');
+        const text = input.value.trim();
+
+        if (text) {
+            const newComment = document.createElement('div');
+            newComment.className = 'comment-item';
+            newComment.innerHTML = `
+                <img src="https://i.pravatar.cc/100?img=60" alt="me">
+                <div class="comment-text"><b>you</b><p>${text}</p></div>
+            `;
+            list.appendChild(newComment);
+            list.scrollTop = list.scrollHeight;
+            input.value = '';
+        }
+    }
+
+    // Allow "Enter" key to post comment
+    document.getElementById('commentInput').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') postComment();
+    });
+
+    // --- 5. Fake Share Feature ---
+    function copyLink() {
+        alert("Link copied to clipboard!");
+        closeAllModals();
+    }
+</script>
+</body>
+</html>
